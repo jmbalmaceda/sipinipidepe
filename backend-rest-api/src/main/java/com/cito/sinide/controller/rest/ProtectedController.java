@@ -16,7 +16,7 @@ import com.cito.sinide.security.TokenUtils;
 public class ProtectedController {
 	@Autowired
 	private TokenUtils tokenUtils;
-	@Value("${cerberus.token.header}")
+	@Value("${sinide.token.header}")
 	private String tokenHeader;
 
 	/**
@@ -25,7 +25,7 @@ public class ProtectedController {
   Spring provides then you can encapsulate it in a service and register it as a bean to use it within the annotation as
   demonstrated below with 'securityService'.
 	 **/
-	@RequestMapping(method = RequestMethod.GET, value="${cerberus.route.protected}")
+	@RequestMapping(method = RequestMethod.GET, value="${sinide.route.protected}")
 	//@PreAuthorize("hasRole('ADMIN')")
 	@PreAuthorize("@securityService.hasProtectedAccess()")
 	public ResponseEntity<?> getDaHoney() {
