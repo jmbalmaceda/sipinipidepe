@@ -1,6 +1,6 @@
-package com.cito.sinide.model.json.request;
+package com.cito.sinide.model.request;
 
-import com.cito.sinide.model.base.ModelBase;
+import com.cito.sinide.model.ModelBase;
 
 public class AuthenticationRequest extends ModelBase {
 

@@ -1,6 +1,6 @@
-package com.cito.sinide.model.json.response;
+package com.cito.sinide.model.response;
 
-import com.cito.sinide.model.base.ModelBase;
+import com.cito.sinide.model.ModelBase;
 
 public class AuthenticationResponse extends ModelBase {
 

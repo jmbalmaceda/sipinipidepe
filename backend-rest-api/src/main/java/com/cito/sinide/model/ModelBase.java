@@ -1,4 +1,4 @@
-package com.cito.sinide.model.base;
+package com.cito.sinide.model;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 
@@ -8,9 +8,9 @@ public class ModelBase implements Serializable {
 
 	private static final long serialVersionUID = 8969711645519539903L;
 
-@Override
-  public String toString() {
-    return ReflectionToStringBuilder.toString(this);
-  }
+	@Override
+	public String toString() {
+		return ReflectionToStringBuilder.toString(this);
+	}
 
 }
