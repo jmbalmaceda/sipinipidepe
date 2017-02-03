@@ -136,13 +136,17 @@ public class TokenUtils {
 		String token = this.generateToken(claims, this.generateExpirationDate());
 		SinideTokenData tokenData = new SinideTokenData();
 		tokenData.setDevice(audience);
-		tokenData.setRefreshToken(token);
+		tokenData.setToken(token);
 		tokenData.setUsername(username);
 		if (tokenService.saveToken(tokenData))
 			return token;
 		return null;
 	}
-
+	
+	public boolean checkValidToken(String token){
+		return tokenService.verifyToken(token);
+	}
+	
 	private String generateToken(Map<String, Object> claims, Date expiration) {
 		return Jwts.builder()
 				.setClaims(claims)

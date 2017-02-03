@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.cito.sinide.security.AuthenticationTokenFilter;
 import com.cito.sinide.security.EntryPointUnauthorizedHandler;
@@ -33,6 +34,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	private SecurityService securityService;
+
+	@Autowired
+	private LogoutSuccessHandler logoutSuccessHandler;
 
 	@Autowired
 	public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
@@ -79,7 +83,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 		.antMatchers("/auth/**").permitAll()
-		.anyRequest().authenticated();
+		.anyRequest().authenticated()
+		.and()
+		.logout().logoutSuccessHandler(this.logoutSuccessHandler).logoutUrl("/logout");
 
 		// Custom JWT based authentication
 		httpSecurity
