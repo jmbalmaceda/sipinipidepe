@@ -1,14 +1,14 @@
 package com.cito.sinide.model;
 
 public class SinideLog {
-	private String code;
+	private String creationCode;
 	private String message;
 	
-	public String getCode() {
-		return code;
+	public String getCreationCode() {
+		return creationCode;
 	}
-	public void setCode(String code) {
-		this.code = code;
+	public void setCreationCode(String code) {
+		this.creationCode = code;
 	}
 	public String getMessage() {
 		return message;

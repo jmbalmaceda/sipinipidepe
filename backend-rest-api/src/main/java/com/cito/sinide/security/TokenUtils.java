@@ -1,6 +1,8 @@
 package com.cito.sinide.security;
 
+import com.cito.sinide.model.SinideTokenData;
 import com.cito.sinide.model.security.SinideUser;
+import com.cito.sinide.service.TokenService;
 
 import io.jsonwebtoken.*;
 
@@ -9,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class TokenUtils {
 
+	@Autowired
+	private TokenService tokenService;
 	private final Logger logger = Logger.getLogger(this.getClass());
 
 	private final String AUDIENCE_UNKNOWN   = "unknown";
@@ -124,16 +128,25 @@ public class TokenUtils {
 
 	public String generateToken(UserDetails userDetails, Device device) {
 		Map<String, Object> claims = new HashMap<String, Object>();
-		claims.put("sub", userDetails.getUsername());
-		claims.put("audience", this.generateAudience(device));
+		String username = userDetails.getUsername();
+		claims.put("sub", username);
+		String audience = this.generateAudience(device);
+		claims.put("audience", audience);
 		claims.put("created", this.generateCurrentDate());
-		return this.generateToken(claims);
+		String token = this.generateToken(claims, this.generateExpirationDate());
+		SinideTokenData tokenData = new SinideTokenData();
+		tokenData.setDevice(audience);
+		tokenData.setRefreshToken(token);
+		tokenData.setUsername(username);
+		if (tokenService.saveToken(tokenData))
+			return token;
+		return null;
 	}
 
-	private String generateToken(Map<String, Object> claims) {
+	private String generateToken(Map<String, Object> claims, Date expiration) {
 		return Jwts.builder()
 				.setClaims(claims)
-				.setExpiration(this.generateExpirationDate())
+				.setExpiration(expiration)
 				.signWith(SignatureAlgorithm.HS512, this.secret)
 				.compact();
 	}
@@ -148,7 +161,7 @@ public class TokenUtils {
 		try {
 			final Claims claims = this.getClaimsFromToken(token);
 			claims.put("created", this.generateCurrentDate());
-			refreshedToken = this.generateToken(claims);
+			refreshedToken = this.generateToken(claims, this.generateExpirationDate());
 		} catch (Exception e) {
 			refreshedToken = null;
 		}

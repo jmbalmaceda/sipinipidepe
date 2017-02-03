@@ -53,7 +53,7 @@ public class LogServiceImpl implements LogService{
 	@Override
 	public LogUpdateResponse update(SinideLog log) {
 		LogUpdateResponse salida = new LogUpdateResponse();
-		Log aux = logRepository.findByCode(log.getCode());
+		Log aux = logRepository.findByCreationCode(log.getCreationCode());
 		aux.setMessage(log.getMessage());
 		logRepository.save(aux);
 		SinideLog updatedLog = LogMapper.INSTANCE.toSinideLog(aux);

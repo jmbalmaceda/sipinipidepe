@@ -42,11 +42,6 @@ public class AuthenticationController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
-	@RequestMapping(method = RequestMethod.GET)
-	public ResponseEntity<?> authenticationRequest(){
-		return ResponseEntity.ok("Ok, logueate");
-	}
-
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<?> authenticationRequest(@RequestBody AuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
