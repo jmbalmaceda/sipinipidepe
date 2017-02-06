@@ -19,3 +19,6 @@ hs_err_pid*
 .project
 .settings
 target
+
+# Archivos que representen bases de datos en memoria
+*.db
